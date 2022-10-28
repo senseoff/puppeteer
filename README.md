@@ -2,11 +2,13 @@
 
 
 ## Installation
-Open start.sh
-
-If any errors do it manually with cmd
+Client
 ```bash
-  tsc
-  node ./dist/index.js
+yarn start
+```
+Server
+```bash
+tsc
+node ./dist/index.js
 ```
     
