@@ -11,17 +11,11 @@ export const buyBook = (
   new Promise<void>(async (resolve, reject) => {
     try {
       const browserURL = "http://127.0.0.1:9222";
-      browser = await puppeteer.connect({ browserURL });
+      browser = await puppeteer.connect({ browserURL, defaultViewport: null });
 
       const clientPage = await getActivePage(browser);
 
       page = await browser.newPage();
-
-      await page.setViewport({
-        width: 1280,
-        height: 800,
-        deviceScaleFactor: 1,
-      });
 
       await clientPage.bringToFront();
 

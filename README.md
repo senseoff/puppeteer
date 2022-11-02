@@ -1,15 +1,15 @@
 # README
-Run in both folders (client, server)
+## Installation
+Run in both folders (client, server) to install dependencies
 ```bash
 yarn install
 ```
-## Installation
-Server
+Run in /server/ folder to run server
 ```bash
 tsc
 node ./dist/index.js
 ```
-Client
+Run in /client/ folder to run client
 ```bash
 FOR MAC OS:
 yarn start

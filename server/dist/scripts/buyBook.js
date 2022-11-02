@@ -9,14 +9,14 @@ const getActivePage_1 = require("../utils/getActivePage");
 const buyBook = (io, browser, page, bookName) => new Promise(async (resolve, reject) => {
     try {
         const browserURL = "http://127.0.0.1:9222";
-        browser = await puppeteer_1.default.connect({ browserURL });
+        browser = await puppeteer_1.default.connect({ browserURL, defaultViewport: null });
         const clientPage = await (0, getActivePage_1.getActivePage)(browser);
         page = await browser.newPage();
-        await page.setViewport({
-            width: 1280,
-            height: 800,
-            deviceScaleFactor: 1,
-        });
+        // await page.setViewport({
+        //   width: 1280,
+        //   height: 800,
+        //   deviceScaleFactor: 1,
+        // });
         await clientPage.bringToFront();
         await page.goto("https://www.amazon.com/", {
             waitUntil: "networkidle2",
@@ -40,14 +40,14 @@ const buyBook = (io, browser, page, bookName) => new Promise(async (resolve, rej
                 }
                 catch { }
                 await Promise.race([
-                    page.waitForSelector(".pmts-indiv-issuer-image"),
-                    page.waitForSelector("#shipaddress"),
+                    page.waitForSelector(".pmts-indiv-issuer-image", { timeout: 30000 }),
+                    page.waitForSelector("#shipaddress", { timeout: 30000 }),
                 ]);
                 io.emit("bought");
                 resolve();
             }
             catch {
-                io.emit("error", "Unable checkout");
+                io.emit("error", "Can't reach checkout, please check Amazon tab and complete purchase");
                 return reject();
             }
         });
