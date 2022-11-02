@@ -12,18 +12,13 @@ const buyBook = (io, browser, page, bookName) => new Promise(async (resolve, rej
         browser = await puppeteer_1.default.connect({ browserURL, defaultViewport: null });
         const clientPage = await (0, getActivePage_1.getActivePage)(browser);
         page = await browser.newPage();
-        // await page.setViewport({
-        //   width: 1280,
-        //   height: 800,
-        //   deviceScaleFactor: 1,
-        // });
         await clientPage.bringToFront();
         await page.goto("https://www.amazon.com/", {
             waitUntil: "networkidle2",
         });
         try {
-            await page.waitForSelector("#twotabsearchtextbox");
-            await page.type("#twotabsearchtextbox", bookName);
+            await page.waitForSelector("#twotabsearchtextbox", { timeout: 2000 });
+            await page.type("#twotabsearchtextbox", bookName, { delay: 100 });
             await page.keyboard.press("Enter");
             await page.waitForSelector(".a-link-normal.s-no-outline");
             await page.click(".a-link-normal.s-no-outline");
@@ -47,11 +42,11 @@ const buyBook = (io, browser, page, bookName) => new Promise(async (resolve, rej
                 resolve();
             }
             catch {
-                io.emit("error", "Can't reach checkout, please check Amazon tab and complete purchase");
+                io.emit("error", "Can't reach checkout, please check Amazon tab and continue");
                 return reject();
             }
         });
-        const addToCartBtn = new Promise(async (resolve, reject) => {
+        const addToCartBtn = new Promise(async (resolve) => {
             try {
                 await page.waitForSelector(".a-button-inner #add-to-cart-button");
                 await page.click(".a-button-inner #add-to-cart-button");
@@ -63,10 +58,9 @@ const buyBook = (io, browser, page, bookName) => new Promise(async (resolve, rej
                 resolve();
             }
             catch {
-                reject();
             }
         });
-        const clickOneClickBtn = new Promise(async (resolve, reject) => {
+        const clickOneClickBtn = new Promise(async (resolve) => {
             try {
                 await page.waitForSelector("#buybox");
                 const accordion = (await page.$x('//*[@id="buybox"]/div[2]/div/label/div/a'))[0];
@@ -78,7 +72,6 @@ const buyBook = (io, browser, page, bookName) => new Promise(async (resolve, rej
                 resolve();
             }
             catch {
-                reject();
             }
         });
         try {

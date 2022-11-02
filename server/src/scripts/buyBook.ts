@@ -24,8 +24,8 @@ export const buyBook = (
       });
 
       try {
-        await page.waitForSelector("#twotabsearchtextbox");
-        await page.type("#twotabsearchtextbox", bookName);
+        await page.waitForSelector("#twotabsearchtextbox", {timeout: 2000});
+        await page.type("#twotabsearchtextbox", bookName, {delay: 100});
         await page.keyboard.press("Enter");
 
         await page.waitForSelector(".a-link-normal.s-no-outline");
@@ -50,12 +50,12 @@ export const buyBook = (
             io.emit("bought");
             resolve();
           } catch {
-            io.emit("error", "Can't reach checkout, please check Amazon tab and complete purchase");
+            io.emit("error", "Can't reach checkout, please check Amazon tab and continue");
             return reject();
           }
         });
 
-      const addToCartBtn = new Promise<void>(async (resolve, reject) => {
+      const addToCartBtn = new Promise<void>(async (resolve) => {
         try {
           await page.waitForSelector(".a-button-inner #add-to-cart-button");
           await page.click(".a-button-inner #add-to-cart-button");
@@ -66,11 +66,10 @@ export const buyBook = (
           await checkLoginOrCheckout();
           resolve();
         } catch {
-          reject();
         }
       });
 
-      const clickOneClickBtn = new Promise<void>(async (resolve, reject) => {
+      const clickOneClickBtn = new Promise<void>(async (resolve) => {
         try {
           await page.waitForSelector("#buybox");
           const accordion = (
@@ -87,7 +86,6 @@ export const buyBook = (
           await checkLoginOrCheckout();
           resolve();
         } catch {
-          reject();
         }
       });
 

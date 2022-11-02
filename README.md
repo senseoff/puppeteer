@@ -1,5 +1,8 @@
 # README
 ## Installation
+
+Fully close your browser
+
 Run in both folders (client, server) to install dependencies
 ```bash
 yarn install
