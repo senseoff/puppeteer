@@ -18,7 +18,8 @@
     "web-vitals": "^2.1.0"
   },
   "scripts": {
-    "start": "set \\\"BROWSER=none\\\" && start chrome --remote-debugging-port=9222 && react-scripts start",
+    "start": "set \\\"BROWSER=none\\\" && /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 && react-scripts start",
+    "start-win": "set \\\"BROWSER=none\\\" && start chrome --remote-debugging-port=9222 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
