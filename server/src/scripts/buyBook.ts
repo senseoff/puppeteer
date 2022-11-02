@@ -50,13 +50,13 @@ export const buyBook = (
             } catch {}
 
             await Promise.race([
-              page.waitForSelector(".pmts-indiv-issuer-image"),
-              page.waitForSelector("#shipaddress"),
+              page.waitForSelector(".pmts-indiv-issuer-image", {timeout: 30000}),
+              page.waitForSelector("#shipaddress", {timeout: 30000}),
             ]);
             io.emit("bought");
             resolve();
           } catch {
-            io.emit("error", "Unable checkout");
+            io.emit("error", "Can't reach checkout, please check Amazon tab and complete purchase");
             return reject();
           }
         });
